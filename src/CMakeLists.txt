@@ -18,6 +18,13 @@ if(WIN32)
     target_link_libraries(unshield-deobfuscate ${ZLIB_LIBRARIES})
 endif()
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(cdio REQUIRED IMPORTED_TARGET libcdio)
+pkg_check_modules(iso9660 REQUIRED IMPORTED_TARGET libiso9660)
+
+add_executable(isocab isocab.c)
+target_link_libraries(isocab PRIVATE PkgConfig::cdio PkgConfig::iso9660 libunshield)
+
 if(BUILD_STATIC AND MSVC)
     set_msvc_runtime_static()
 endif()
